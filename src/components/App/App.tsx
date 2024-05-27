@@ -19,7 +19,7 @@ export const App: React.FC = () => {
   >();
 
   const handleAddMarker = (coordinates: LngLat) => {
-    if (!activeMarkerTemplateIdx) {
+    if (activeMarkerTemplateIdx === undefined) {
       return;
     }
 

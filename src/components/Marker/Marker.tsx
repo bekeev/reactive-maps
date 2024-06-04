@@ -10,19 +10,20 @@ import { colorPalette } from '../../colorPalette';
 
 const CustomMarker = styled(FontAwesomeIcon)<{ color: string }>`
   cursor: pointer;
-  width: 40px;
-  height: 40px;
-  padding: 8px;
   color: ${({ color }) => color};
 
   border: 4px solid ${({ color }) => color};
   border-radius: 20px;
   background-color: ${colorPalette.background};
 
+  height: 40px;
+  width: 40px;
+  padding: 8px;
   transform: translate(-50%, -50%);
 `;
 
 export type MarkerProps = {
+  id: string;
   coordinates: LngLat;
   title: string;
   description: string;

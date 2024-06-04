@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { LngLat, YMapLocationRequest } from 'ymaps3';
 
 import { Listeners } from './Listeners';
+import { Clusterer } from './Clusterer';
+import { MarkerProps } from '../Marker/Marker';
 import { useYandexMaps } from '../../hooks/useYandexMaps';
-import { Marker, MarkerProps } from '../Marker/Marker';
-import { LngLat, YMapLocationRequest } from 'ymaps3';
 
 const LOCATION: YMapLocationRequest = {
   center: [43.07678742815782, 44.05941536523786], // стартовая позиция [lng, lat]
@@ -13,7 +14,7 @@ const LOCATION: YMapLocationRequest = {
 type Props = {
   markers: MarkerProps[];
   onAddMarker: (coordinates: LngLat) => void;
-  onRemoveMarker: (idx: number) => void;
+  onRemoveMarker: (idx: string) => void;
 };
 
 export const YandexMap: React.FC<Props> = ({
@@ -21,14 +22,15 @@ export const YandexMap: React.FC<Props> = ({
   onAddMarker,
   onRemoveMarker,
 }) => {
-  const [location, setLocation] = useState<YMapLocationRequest>(LOCATION);
-
+  const [location, setLocation] = useState<any>(LOCATION);
   const {
     YMap,
     YMapDefaultSchemeLayer,
     YMapDefaultFeaturesLayer,
     YMapMarker,
     YMapListener,
+    YMapControls,
+    YMapGeolocationControl,
   } = useYandexMaps();
 
   if (
@@ -36,7 +38,9 @@ export const YandexMap: React.FC<Props> = ({
     !YMapDefaultSchemeLayer ||
     !YMapDefaultFeaturesLayer ||
     !YMapMarker ||
-    !YMapListener
+    !YMapListener ||
+    !YMapControls ||
+    !YMapGeolocationControl
   ) {
     return <div>Loading...</div>;
   }
@@ -45,16 +49,12 @@ export const YandexMap: React.FC<Props> = ({
     <YMap location={location}>
       <YMapDefaultSchemeLayer />
       <YMapDefaultFeaturesLayer />
+      <Clusterer markers={markers} onRemoveMarker={onRemoveMarker} />
       <Listeners onAddMarker={onAddMarker} setLocation={setLocation} />
-      {markers.map((marker, idx) => {
-        return (
-          <Marker
-            key={marker.coordinates.toString()}
-            {...marker}
-            onRemove={() => onRemoveMarker(idx)}
-          />
-        );
-      })}
+      <YMapControls position="left">
+        {/* Add the geolocation control to the map */}
+        <YMapGeolocationControl />
+      </YMapControls>
     </YMap>
   );
 };

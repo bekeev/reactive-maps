@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { styled } from 'styled-components';
 
 import { MarkersList } from '../MarkersList/MarkersList';
@@ -28,6 +28,7 @@ export const App: React.FC = () => {
     setSettedMarkers((prevMarkers) => [
       ...prevMarkers,
       {
+        id: coordinates[0].toString() + coordinates[1].toString(),
         coordinates: coordinates,
         title: selectedMarkerTemplate.name,
         //TODO можно добавить функционал описания маркера
@@ -40,12 +41,15 @@ export const App: React.FC = () => {
     setActiveMarkerTemplateIdx(undefined);
   };
 
-  const handleRemoveMarker = (idx: number) => {
-    setSettedMarkers((prevMarkers) => [
-      ...prevMarkers.slice(0, idx),
-      ...prevMarkers.slice(idx + 1),
-    ]);
-  };
+  const handleRemoveMarker = useCallback((idx: string) => {
+    setSettedMarkers((prevMarkers) => {
+      const indexFounded = prevMarkers.findIndex((marker) => marker.id === idx);
+      return [
+        ...prevMarkers.slice(0, indexFounded),
+        ...prevMarkers.slice(indexFounded + 1),
+      ];
+    });
+  }, []);
 
   return (
     <Container>

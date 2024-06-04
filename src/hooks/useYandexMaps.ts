@@ -11,6 +11,14 @@ export const useYandexMaps = () => {
   const [YMapMarker, setYMapMarker] = useState<any>(null);
   const [YMapListener, setYMapListener] = useState<any>(null);
   const [YMapDefaultMarker, setYMapDefaultMarker] = useState<any>(null);
+  const [YMapClusterer, setYMapClusterer] = useState<any>(null);
+  const [clusterByGrid, setClusterByGrid] = useState<any>(null);
+  const [YMapFeatureDataSource, setYMapFeatureDataSource] = useState<any>(null);
+  const [YMapLayer, setYMapLayer] = useState<any>(null);
+  const [YMapFeature, setYMapFeature] = useState<any>(null);
+  const [YMapControls, setYMapControls] = useState<any>(null);
+  const [YMapGeolocationControl, setYMapGeolocationControl] =
+    useState<any>(null);
 
   useEffect(() => {
     const loadMapModules = async () => {
@@ -24,10 +32,22 @@ export const useYandexMaps = () => {
         YMapDefaultFeaturesLayer,
         YMapMarker,
         YMapListener,
+        YMapFeatureDataSource,
+        YMapLayer,
+        YMapFeature,
+        YMapControls,
       } = reactify.module(ymaps3);
 
       const { YMapDefaultMarker } = reactify.module(
         await ymaps3.import('@yandex/ymaps3-markers@0.0.1'),
+      );
+
+      const { YMapClusterer, clusterByGrid } = reactify.module(
+        await ymaps3.import('@yandex/ymaps3-clusterer@0.0.1'),
+      );
+
+      const { YMapGeolocationControl } = reactify.module(
+        await ymaps3.import('@yandex/ymaps3-controls@0.0.1'),
       );
 
       setYMap(() => YMap);
@@ -36,6 +56,13 @@ export const useYandexMaps = () => {
       setYMapMarker(() => YMapMarker);
       setYMapListener(() => YMapListener);
       setYMapDefaultMarker(() => YMapDefaultMarker);
+      setYMapClusterer(() => YMapClusterer);
+      setClusterByGrid(() => clusterByGrid);
+      setYMapFeatureDataSource(() => YMapFeatureDataSource);
+      setYMapLayer(() => YMapLayer);
+      setYMapFeature(() => YMapFeature);
+      setYMapControls(() => YMapControls);
+      setYMapGeolocationControl(() => YMapGeolocationControl);
     };
 
     loadMapModules().catch((error) => console.error(error.message));
@@ -48,5 +75,12 @@ export const useYandexMaps = () => {
     YMapMarker,
     YMapListener,
     YMapDefaultMarker,
+    YMapClusterer,
+    clusterByGrid,
+    YMapFeatureDataSource,
+    YMapLayer,
+    YMapFeature,
+    YMapControls,
+    YMapGeolocationControl,
   };
 };

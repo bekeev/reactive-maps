@@ -29,7 +29,7 @@ export const Clusterer: React.FC<TProps> = ({ markers, onRemoveMarker }) => {
   const marker = useCallback(
     (feature: Feature & { markerProps: MarkerProps }) => (
       <Marker
-        key={feature.id}
+        key={feature.markerProps.id}
         {...feature.markerProps}
         onRemove={() => onRemoveMarker(feature.markerProps.id)}
       />
